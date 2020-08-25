@@ -1,1 +1,12 @@
 2020/08/25 09:21:19 [error] 17906#0: *1 open() "./installed/html/test" failed (2: No such file or directory), client: 10.23.85.46, server: localhost, request: "GET /test HTTP/1.1", host: "10.217.2.66"
+2020/08/25 10:29:23 [alert] 23237#0: worker process 23238 exited on signal 9
+2020/08/25 10:29:50 [alert] 23398#0: worker process 23399 exited on signal 9
+2020/08/25 10:40:23 [alert] 24629#0: worker process 24630 exited on signal 9
+2020/08/25 10:55:38 [alert] 26805#0: worker process 26806 exited on signal 11 (core dumped)
+2020/08/25 10:55:54 [alert] 26885#0: worker process 26886 exited on signal 11 (core dumped)
+2020/08/25 10:56:44 [alert] 27013#0: worker process 27014 exited on signal 11 (core dumped)
+2020/08/25 10:56:45 [alert] 27013#0: worker process 27017 exited on signal 11 (core dumped)
+2020/08/25 10:56:45 [alert] 27013#0: worker process 27019 exited on signal 11 (core dumped)
+2020/08/25 10:57:04 [alert] 27106#0: worker process 27107 exited on signal 11 (core dumped)
+2020/08/25 10:57:04 [alert] 27106#0: worker process 27109 exited on signal 11 (core dumped)
+2020/08/25 10:58:07 [alert] 27205#0: worker process 27206 exited on signal 11 (core dumped)

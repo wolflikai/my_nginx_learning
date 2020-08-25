@@ -29,11 +29,51 @@ module_s 调用顺序：
 static ngx_int_t
 my_delete_dir(ngx_str_t* path) {
     ngx_dir_t dir;
+    u_char          *p;
+    u_char           spath[NGX_MAX_PATH + 1];
+
     if (ngx_open_dir(path, &dir) != NGX_OK) {
         printf("ngx open dir error\n");
         return NGX_ERROR;
     }
     
+
+    ngx_err_t err;
+    // 读出所有的文件
+    ngx_str_t name;
+    for(;;) {
+        ngx_set_errno(0);
+        if (ngx_read_dir(&dir) == NGX_ERROR) {
+            err = ngx_errno;
+            if (err == NGX_ENOMOREFILES) {
+                goto done;
+            }
+        }
+        if (!ngx_de_is_file(&dir)) {
+            continue;
+        }
+        name.data = ngx_de_name(&dir);
+        if (name.data[0] == '.') {
+            continue;
+        }
+        name.len = ngx_de_namelen(&dir);
+        printf("name: %s\n", name.data);
+
+        p = ngx_snprintf(spath, sizeof(spath) - 1, "%V/%V", path, &name);
+        *p = 0;
+        
+        if (ngx_delete_file(spath) == NGX_FILE_ERROR) {
+            printf("delete file error\n");
+        }
+        
+    }
+
+done:
+    // try to delete dir
+    ngx_delete_dir(path->data);
+   
+    printf("return ok\n");
+    return NGX_OK;
 }
 
 
@@ -72,6 +112,10 @@ static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r) {
     ngx_chain_t out;
     out.buf = b;
     out.next = NULL;
+
+    ngx_str_t path = ngx_string("/home/reading/reading/lk_test_dir");
+
+    my_delete_dir(&path);
 
     return ngx_http_output_filter(r, &out);
 }
