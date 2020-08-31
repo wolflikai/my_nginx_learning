@@ -10,3 +10,37 @@
 2020/08/25 10:57:04 [alert] 27106#0: worker process 27107 exited on signal 11 (core dumped)
 2020/08/25 10:57:04 [alert] 27106#0: worker process 27109 exited on signal 11 (core dumped)
 2020/08/25 10:58:07 [alert] 27205#0: worker process 27206 exited on signal 11 (core dumped)
+2020/08/26 08:13:43 [alert] 21418#0: worker process 21419 exited on signal 11 (core dumped)
+2020/08/26 08:13:43 [alert] 21418#0: worker process 21534 exited on signal 11 (core dumped)
+2020/08/26 08:26:46 [alert] 22399#0: worker process 22400 exited on signal 11 (core dumped)
+2020/08/26 08:46:03 [emerg] 33193#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/08/26 08:46:03 [emerg] 33193#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/08/26 08:46:03 [emerg] 33193#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/08/26 08:46:12 [alert] 33200#0: worker process 33201 exited on signal 11 (core dumped)
+2020/08/26 08:46:12 [alert] 33200#0: worker process 33217 exited on signal 11 (core dumped)
+2020/08/26 09:10:07 [alert] 42876#0: worker process 42877 exited on signal 9
+2020/08/26 09:11:21 [alert] 43052#0: worker process 43053 exited on signal 9
+2020/08/26 09:11:57 [alert] 43052#0: worker process 43133 exited on signal 9
+2020/08/26 09:12:04 [alert] 43052#0: worker process 43181 exited on signal 9
+2020/08/26 09:12:09 [alert] 43052#0: worker process 43192 exited on signal 9
+2020/08/26 09:12:18 [alert] 43052#0: worker process 43201 exited on signal 9
+2020/08/26 09:12:42 [alert] 43052#0: worker process 43211 exited on signal 9
+2020/08/26 09:12:47 [alert] 43052#0: worker process 43253 exited on signal 9
+2020/08/26 09:12:55 [alert] 43052#0: worker process 43264 exited on signal 9
+2020/08/26 09:13:08 [alert] 43052#0: worker process 43272 exited on signal 9
+2020/08/26 09:14:03 [alert] 43347#0: worker process 43348 exited on signal 9
+2020/08/26 09:15:43 [alert] 43529#0: worker process 43530 exited on signal 9
+2020/08/26 09:15:47 [alert] 43529#0: worker process 43574 exited on signal 9
+2020/08/26 09:15:57 [alert] 43529#0: worker process 43580 exited on signal 9
+2020/08/26 09:16:02 [alert] 43529#0: worker process 43587 exited on signal 9
+2020/08/27 06:48:53 [alert] 28087#0: worker process 28088 exited on signal 11 (core dumped)
+2020/08/27 06:48:59 [alert] 28087#0: worker process 28101 exited on signal 11 (core dumped)
+2020/08/27 06:49:19 [alert] 28158#0: worker process 28159 exited on signal 11 (core dumped)
+2020/08/27 06:50:11 [alert] 30876#0: worker process 30877 exited on signal 11 (core dumped)
+2020/08/27 06:51:02 [alert] 31035#0: worker process 31036 exited on signal 11 (core dumped)
+2020/08/31 06:58:18 [emerg] 23092#0: open() "/home/reading/reading/nginx/instaled/conf/nginx.conf" failed (2: No such file or directory)
+2020/08/31 06:58:52 [emerg] 23140#0: open() "/home/reading/reading/nginx/instaled/conf/nginx.conf" failed (2: No such file or directory)
+2020/08/31 06:59:00 [emerg] 23158#0: open() "/home/reading/reading/nginx/installed/conf/nginx.conf" failed (2: No such file or directory)
+2020/08/31 06:59:17 [emerg] 23185#0: open() "/home/reading/reading/nginx/conf/nginx.conf" failed (2: No such file or directory)
+2020/08/31 06:59:35 [error] 23207#0: *2 open() "./installed/html/favicon.ico" failed (2: No such file or directory), client: 10.23.170.46, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "10.217.2.66", referrer: "http://10.217.2.66/"
+2020/08/31 07:32:48 [emerg] 25311#0: open() "/home/reading/reading/nginx/conf/nginx.conf" failed (2: No such file or directory)

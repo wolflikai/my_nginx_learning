@@ -24,7 +24,6 @@ module_s 调用顺序：
 
 
 static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r) {
-    printf("mytest\n");
     if ( !(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD))) {
         return NGX_HTTP_NOT_ALLOWED;
     }
@@ -43,23 +42,54 @@ static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r) {
     if (rc == NGX_ERROR || rc > NGX_OK || r->header_only) {
         return rc;
     }
+    // 临时的内存 把数据写进去
+    // ngx_buf_t *b;
+    // b = ngx_create_temp_buf(r->pool, res.len);
+    // if (b == NULL) {
+    //     return NGX_HTTP_INTERNAL_SERVER_ERROR;
+    // }
+    // ngx_memcpy(b->pos, res.data, res.len);
+    // b->last = b->pos + res.len;
+    // b->last_buf = 1;
     
+
     ngx_buf_t *b;
-    b = ngx_create_temp_buf(r->pool, res.len);
-    if (b == NULL) {
+    b = ngx_palloc(r->pool, sizeof(ngx_buf_t));
+    u_char* filename = "/home/reading/reading/extended/test_module/hello.txt";
+    b->in_file = 1;
+    b->file = ngx_palloc(r->pool, sizeof(ngx_file_t));
+    b->file->fd = ngx_open_file(filename, NGX_FILE_RDONLY, NGX_FILE_OPEN, NGX_FILE_DEFAULT_ACCESS);
+    b->file->name.len = strlen(filename);
+    if (b->file->fd <= 0) {
+        return NGX_HTTP_NOT_FOUND;
+    }
+    if (ngx_file_info(filename, &b->file->info) == NGX_FILE_ERROR) {
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
+    r->headers_out.content_length_n = b->file->info.st_size;
+    b->file_pos = 0;
+    b->file_last = b->file->info.st_size;
+    printf("\n");
+    printf("st size: %u\n", b->file_last);
+    // close the file
+    ngx_pool_cleanup_t* cln = ngx_pool_cleanup_add(r->pool, sizeof(ngx_pool_cleanup_file_t));
+    if (cln == NULL) {
+        return NGX_ERROR;
+    }
+    cln->handler = ngx_pool_cleanup_file;
+    ngx_pool_cleanup_file_t* clnf = cln->data;
+    clnf->fd = b->file->fd;
+    clnf->name = b->file->name.data;
+    clnf->log = r->pool->log;
+    
+    // ngx_str_t path = ngx_string("/dev/shm/fmp4/2");
+    // remove_timer((ngx_cycle_t *)ngx_cycle, path, 5000);
 
-    ngx_memcpy(b->pos, res.data, res.len);
-    b->last = b->pos + res.len;
-    b->last_buf = 1;
     ngx_chain_t out;
     out.buf = b;
     out.next = NULL;
 
-    ngx_str_t path = ngx_string("/home/reading/reading/lk_test_dir");
-    remove_timer((ngx_cycle_t *)ngx_cycle, path, 10000);
-
+    r->allow_ranges = 1;
     return ngx_http_output_filter(r, &out);
 }
 
