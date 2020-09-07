@@ -211,7 +211,7 @@ static inline test_queue() {
     for (; i < 5; i++) {
         node[i].num = i;
     }
-    
+
     // 3 1 0 2 4
     ngx_queue_insert_tail(&queue_container, &node[0].q_ele);
     ngx_queue_insert_head(&queue_container, &node[1].q_ele);
@@ -229,12 +229,35 @@ static inline test_queue() {
 
 }
 
+
+static inline test_array(ngx_http_request_t *r) {
+    ngx_array_t* dy_array = ngx_array_create(r->pool, 1, sizeof(test_node));
+    test_node* a =  ngx_array_push(dy_array);
+    a->num = 1;
+    a = ngx_array_push(dy_array);
+    a->num = 2;
+    test_node* b = ngx_array_push_n(dy_array, 3);
+    b->num = 3;
+    (b+1)->num = 4;
+    (b+2)->num = 5;
+
+    test_node* node_arr = dy_array->elts;
+    ngx_uint_t arr_seq = 0;
+    for (; arr_seq < dy_array->nelts; arr_seq++) {
+        a = node_arr + arr_seq;
+        printf("num=%d\n", a->num);
+    }
+
+    ngx_array_destroy(dy_array);
+}
+
 static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r) {
     if ( !(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD))) {
         return NGX_HTTP_NOT_ALLOWED;
     }
 
     test_queue();
+    test_array(r);
 
     // 获取上下文
     ngx_http_mytest_ctx_t* myctx = ngx_http_get_module_ctx(r, ngx_http_mytest_module);
