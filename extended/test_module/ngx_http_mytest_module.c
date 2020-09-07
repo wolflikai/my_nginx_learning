@@ -229,6 +229,51 @@ static inline test_queue() {
 
 }
 
+typedef struct {
+    ngx_rbtree_node_t node;
+    ngx_uint_t num;
+} test_rbtree_node;
+
+static inline test_rbtree() {
+    ngx_rbtree_t rbtree;
+    ngx_rbree_node_t sentinel;
+    ngx_rbtree_init(&rbtree, &sentinel, ngx_rbree_insert_value);
+
+    test_rbtree_node rb_tree_nodes[10];
+    rb_tree_nodes[0].num = 1;
+    rb_tree_nodes[1].num = 6;
+    rb_tree_nodes[2].num = 8;
+    rb_tree_nodes[3].num = 11;
+    rb_tree_nodes[4].num = 13;
+    rb_tree_nodes[5].num = 15;
+    rb_tree_nodes[6].num = 17;
+    rb_tree_nodes[7].num = 22;
+    rb_tree_nodes[8].num = 25;
+    rb_tree_nodes[9].num = 27;
+    
+    int i = 0;
+    for (; i < 10; i++) {
+        rb_tree_nodes[i].node.key = rb_tree_nodes[i].num;
+        ngx_rbtree_insert(&rbtree, &rb_tree_nodes[i].node);
+    }
+
+    ngx_rbtree_t* tmp_node = ngx_rbtree_min(rbtree.root, &sentinel);
+    printf("min=%d\n", tmp_node->num);
+
+    ngx_uint_t lookup_key = 13;
+    tmp_node = rbtree.root;
+    test_rbtree_node *lookup_node;
+    while (tmp_node != &sentinel) {
+        if (lookup_key != tmp_node->key) {
+            tmp_node = (lookup_key < tmp_node->key) ? tmp_node->left : tmp_node->right;
+            continue;
+        }
+        lookup_node = (test_rbtree_node*)tmp_node;
+        break;
+    }
+
+}
+
 
 static inline test_array(ngx_http_request_t *r) {
     ngx_array_t* dy_array = ngx_array_create(r->pool, 1, sizeof(test_node));
