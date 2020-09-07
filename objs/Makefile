@@ -1,9 +1,8 @@
 
 CC =	cc
-CXX = g++
 CFLAGS =  -pipe  -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -w
 CPP =	cc -E
-LINK =	$(CXX)
+LINK =	$(CC)
 
 
 ALL_INCS = -I src/core \
@@ -223,7 +222,7 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_upstream_least_conn_module.o \
 	objs/src/http/modules/ngx_http_upstream_keepalive_module.o \
 	objs/src/http/modules/ngx_http_upstream_zone_module.o \
-	objs/addon/cpp_module/ngx_http_mytest_module.o \
+	objs/addon/test_module/ngx_http_mytest_module.o \
 	objs/ngx_modules.o
 
 	$(LINK) -o objs/nginx \
@@ -342,7 +341,7 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_upstream_least_conn_module.o \
 	objs/src/http/modules/ngx_http_upstream_keepalive_module.o \
 	objs/src/http/modules/ngx_http_upstream_zone_module.o \
-	objs/addon/cpp_module/ngx_http_mytest_module.o \
+	objs/addon/test_module/ngx_http_mytest_module.o \
 	objs/ngx_modules.o \
 	-ldl -lpthread -lcrypt -lpcre -lz \
 	-Wl,-E
@@ -1163,11 +1162,11 @@ objs/src/http/modules/ngx_http_upstream_zone_module.o:	$(CORE_DEPS) $(HTTP_DEPS)
 		src/http/modules/ngx_http_upstream_zone_module.c
 
 
-objs/addon/cpp_module/ngx_http_mytest_module.o:	$(ADDON_DEPS) \
-	./extended/cpp_module//ngx_http_mytest_module.cpp
-	$(CXX) -std=c++11 -c $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/cpp_module/ngx_http_mytest_module.o \
-		./extended/cpp_module//ngx_http_mytest_module.cpp
+objs/addon/test_module/ngx_http_mytest_module.o:	$(ADDON_DEPS) \
+	./extended/test_module/ngx_http_mytest_module.c
+	$(CC) -c $(CFLAGS)  $(ALL_INCS) \
+		-o objs/addon/test_module/ngx_http_mytest_module.o \
+		./extended/test_module/ngx_http_mytest_module.c
 
 
 manpage:	objs/nginx.8

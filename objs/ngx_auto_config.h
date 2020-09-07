@@ -1,4 +1,4 @@
-#define NGX_CONFIGURE " --prefix=./installed --add-module=./extended/cpp_module/ --with-cc-opt=-w"
+#define NGX_CONFIGURE " --prefix=./installed --add-module=./extended/test_module --with-cc-opt=-w"
 
 #ifndef NGX_COMPILER
 #define NGX_COMPILER  "gcc 4.9.2 (Debian 4.9.2-10+deb8u2) "

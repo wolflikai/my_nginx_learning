@@ -44,3 +44,5 @@
 2020/08/31 06:59:17 [emerg] 23185#0: open() "/home/reading/reading/nginx/conf/nginx.conf" failed (2: No such file or directory)
 2020/08/31 06:59:35 [error] 23207#0: *2 open() "./installed/html/favicon.ico" failed (2: No such file or directory), client: 10.23.170.46, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "10.217.2.66", referrer: "http://10.217.2.66/"
 2020/08/31 07:32:48 [emerg] 25311#0: open() "/home/reading/reading/nginx/conf/nginx.conf" failed (2: No such file or directory)
+2020/09/07 09:21:37 [emerg] 6300#0: invalid number of arguments in "mytest" directive in /home/reading/reading/installed/conf/nginx.conf:51
+2020/09/07 09:23:11 [emerg] 9077#0: invalid number of arguments in "mytest" directive in /home/reading/reading/installed/conf/nginx.conf:51

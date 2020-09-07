@@ -22,7 +22,7 @@ module_s 调用顺序：
 
 #include "delete_dir.h"
 
-
+static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r);
 
 
 typedef struct {
@@ -60,7 +60,7 @@ static void* ngx_http_mytest_create_loc_conf(ngx_conf_t* cf) {
     mycf->my_str_array = NGX_CONF_UNSET_PTR;
     mycf->my_keyval = NULL;
     mycf->my_off = NGX_CONF_UNSET;
-    mycf->my_msec = NGX_CONF_UNSET_MSET;
+    mycf->my_msec = NGX_CONF_UNSET_MSEC;
     mycf->my_sec = NGX_CONF_UNSET;
     mycf->my_size = NGX_CONF_UNSET_SIZE;
     return mycf;
@@ -79,7 +79,7 @@ ngx_http_mytest(ngx_conf_t* cf, ngx_command_t* cmd, void* conf) {
 static ngx_command_t ngx_http_mytest_commands[] = {
         {
             ngx_string("mytest"),
-            NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_HTTP_LOC_CONF | NGX_CONF_TAKE1,
+            NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_HTTP_LOC_CONF | NGX_CONF_NOARGS,
             ngx_http_mytest,  // char* (*set) (ngx_conf_t*, ngx_command_t*, void*)
             NGX_HTTP_LOC_CONF_OFFSET,  // 指示配置项所处内存相对偏移位置
             0,
@@ -171,6 +171,8 @@ static ngx_http_module_t ngx_http_mytest_module_ctx = {
     NULL  // merge location configuration
 };
 
+
+
 ngx_module_t ngx_http_mytest_module = {
     NGX_MODULE_V1,
     &ngx_http_mytest_module_ctx,
@@ -187,17 +189,57 @@ ngx_module_t ngx_http_mytest_module = {
     NGX_MODULE_V1_PADDING
 };
 
+typedef struct {
+    u_char* str;
+    ngx_queue_t q_ele;
+    int num;
+} test_node;
 
+ngx_int_t com_test_node(const ngx_queue_t* a, const ngx_queue_t* b) {
+    test_node* a_node = ngx_queue_data(a, test_node, q_ele);
+    test_node* b_node = ngx_queue_data(b, test_node, q_ele);
+    return a_node->num > b_node->num;
+}
+
+static inline test_queue() {
+    // 必须要初始化
+    ngx_queue_t queue_container;
+    ngx_queue_init(&queue_container);
+
+    int i = 0;
+    test_node node[5];
+    for (; i < 5; i++) {
+        node[i].num = i;
+    }
+    
+    // 3 1 0 2 4
+    ngx_queue_insert_tail(&queue_container, &node[0].q_ele);
+    ngx_queue_insert_head(&queue_container, &node[1].q_ele);
+    ngx_queue_insert_tail(&queue_container, &node[2].q_ele);
+    ngx_queue_insert_after(&queue_container, &node[3].q_ele);
+    ngx_queue_insert_tail(&queue_container, &node[4].q_ele);
+
+    ngx_queue_t *q;
+    for (q = ngx_queue_head(&queue_container); q != ngx_queue_sentinel(&queue_container);
+        q = ngx_queue_next(q))
+    {
+        test_node* ele_node = ngx_queue_data(q, test_node, q_ele);
+        printf("num: %d\n", ele_node->num);
+    }
+
+}
 
 static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r) {
     if ( !(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD))) {
         return NGX_HTTP_NOT_ALLOWED;
     }
 
+    test_queue();
+
     // 获取上下文
     ngx_http_mytest_ctx_t* myctx = ngx_http_get_module_ctx(r, ngx_http_mytest_module);
-    if (mycf == NULL) {
-        mycf = ngx_palloc(r->pool, sizeof(ngx_http_mytest_ctx_t));
+    if (myctx == NULL) {
+        myctx = ngx_palloc(r->pool, sizeof(ngx_http_mytest_ctx_t));
         if (myctx == NULL) {
             return NGX_ERROR;
         }
