@@ -46,3 +46,43 @@
 2020/08/31 07:32:48 [emerg] 25311#0: open() "/home/reading/reading/nginx/conf/nginx.conf" failed (2: No such file or directory)
 2020/09/07 09:21:37 [emerg] 6300#0: invalid number of arguments in "mytest" directive in /home/reading/reading/installed/conf/nginx.conf:51
 2020/09/07 09:23:11 [emerg] 9077#0: invalid number of arguments in "mytest" directive in /home/reading/reading/installed/conf/nginx.conf:51
+2020/09/29 17:30:57 [emerg] 26242#0: open() "/home/reading/reading/installed/conf/nginx.conf" failed (2: No such file or directory)
+2020/09/29 17:34:32 [emerg] 31373#0: open() "/installed/conf/nginx.conf" failed (2: No such file or directory)
+2020/09/29 17:36:08 [warn] 34960#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 17:36:25 [error] 34966#0: *2 open() "./installed/html/favicon.ico" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "127.0.0.1", referrer: "http://127.0.0.1/"
+2020/09/29 17:38:40 [warn] 38861#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 17:43:53 [emerg] 44268#0: getgrnam("root") failed in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 17:44:26 [emerg] 47104#0: getgrnam("root") failed in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 17:44:55 [emerg] 49908#0: getgrnam("root") failed in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 17:45:46 [warn] 52916#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 17:45:51 [error] 52922#0: *2 open() "./installed/html/start" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /start HTTP/1.1", host: "127.0.0.1"
+2020/09/29 17:45:51 [error] 52922#0: *1 open() "./installed/html/favicon.ico" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "127.0.0.1", referrer: "http://127.0.0.1/start"
+2020/09/29 17:45:54 [error] 52922#0: *1 open() "./installed/html/start" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /start HTTP/1.1", host: "127.0.0.1"
+2020/09/29 18:04:11 [warn] 65183#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 18:04:37 [error] 65186#0: *1 open() "./installed/html/test" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /test HTTP/1.1", host: "127.0.0.1"
+2020/09/29 18:05:26 [warn] 68389#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 19:53:18 [warn] 34764#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 19:56:12 [warn] 38906#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 19:56:19 [alert] 38906#0: worker process 38935 exited on signal 11
+2020/09/29 19:57:26 [alert] 38906#0: worker process 39002 exited on signal 11
+2020/09/29 19:58:50 [warn] 42930#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 19:59:16 [alert] 42930#0: worker process 42944 exited on signal 11
+2020/09/29 20:00:14 [warn] 46231#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 20:01:15 [alert] 46231#0: worker process 46234 exited on signal 11
+2020/09/29 20:02:21 [alert] 46231#0: worker process 46771 exited on signal 11
+2020/09/29 20:02:28 [alert] 46231#0: worker process 47378 exited on signal 11
+2020/09/29 20:02:29 [alert] 46231#0: worker process 47438 exited on signal 11
+2020/09/29 20:05:51 [warn] 51746#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 20:07:26 [warn] 55158#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 20:07:30 [alert] 55158#0: worker process 55161 exited on signal 11
+2020/09/29 20:07:32 [alert] 55158#0: worker process 55209 exited on signal 11
+2020/09/29 20:07:33 [alert] 55158#0: worker process 55242 exited on signal 11
+2020/09/29 20:07:34 [alert] 55158#0: worker process 55255 exited on signal 11
+2020/09/29 20:07:34 [alert] 55158#0: worker process 55289 exited on signal 11
+2020/09/29 20:07:35 [alert] 55158#0: worker process 55297 exited on signal 11
+2020/09/29 20:07:36 [alert] 55158#0: worker process 55314 exited on signal 11
+2020/09/29 20:07:36 [alert] 55158#0: worker process 55319 exited on signal 11
+2020/09/29 20:07:37 [alert] 55158#0: worker process 55336 exited on signal 11
+2020/09/29 20:07:38 [alert] 55158#0: worker process 55354 exited on signal 11
+2020/09/29 20:07:38 [alert] 55158#0: worker process 55384 exited on signal 11
+2020/09/29 20:07:39 [alert] 55158#0: worker process 55399 exited on signal 11

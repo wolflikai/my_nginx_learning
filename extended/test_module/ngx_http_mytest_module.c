@@ -189,198 +189,27 @@ ngx_module_t ngx_http_mytest_module = {
     NGX_MODULE_V1_PADDING
 };
 
-typedef struct {
-    u_char* str;
-    ngx_queue_t q_ele;
-    int num;
-} test_node;
-
-ngx_int_t com_test_node(const ngx_queue_t* a, const ngx_queue_t* b) {
-    test_node* a_node = ngx_queue_data(a, test_node, q_ele);
-    test_node* b_node = ngx_queue_data(b, test_node, q_ele);
-    return a_node->num > b_node->num;
-}
-
-static inline test_queue() {
-    // 必须要初始化
-    ngx_queue_t queue_container;
-    ngx_queue_init(&queue_container);
-
-    int i = 0;
-    test_node node[5];
-    for (; i < 5; i++) {
-        node[i].num = i;
-    }
-
-    // 3 1 0 2 4
-    ngx_queue_insert_tail(&queue_container, &node[0].q_ele);
-    ngx_queue_insert_head(&queue_container, &node[1].q_ele);
-    ngx_queue_insert_tail(&queue_container, &node[2].q_ele);
-    ngx_queue_insert_after(&queue_container, &node[3].q_ele);
-    ngx_queue_insert_tail(&queue_container, &node[4].q_ele);
-
-    ngx_queue_t *q;
-    for (q = ngx_queue_head(&queue_container); q != ngx_queue_sentinel(&queue_container);
-        q = ngx_queue_next(q))
-    {
-        test_node* ele_node = ngx_queue_data(q, test_node, q_ele);
-        printf("num: %d\n", ele_node->num);
-    }
-
-}
-
-typedef struct {
-    ngx_rbtree_node_t node;
-    ngx_uint_t num;
-} test_rbtree_node;
-
-static inline test_rbtree() {
-    ngx_rbtree_t rbtree;
-    ngx_rbree_node_t sentinel;
-    ngx_rbtree_init(&rbtree, &sentinel, ngx_rbree_insert_value);
-
-    test_rbtree_node rb_tree_nodes[10];
-    rb_tree_nodes[0].num = 1;
-    rb_tree_nodes[1].num = 6;
-    rb_tree_nodes[2].num = 8;
-    rb_tree_nodes[3].num = 11;
-    rb_tree_nodes[4].num = 13;
-    rb_tree_nodes[5].num = 15;
-    rb_tree_nodes[6].num = 17;
-    rb_tree_nodes[7].num = 22;
-    rb_tree_nodes[8].num = 25;
-    rb_tree_nodes[9].num = 27;
-    
-    int i = 0;
-    for (; i < 10; i++) {
-        rb_tree_nodes[i].node.key = rb_tree_nodes[i].num;
-        ngx_rbtree_insert(&rbtree, &rb_tree_nodes[i].node);
-    }
-
-    ngx_rbtree_t* tmp_node = ngx_rbtree_min(rbtree.root, &sentinel);
-    printf("min=%d\n", tmp_node->num);
-
-    ngx_uint_t lookup_key = 13;
-    tmp_node = rbtree.root;
-    test_rbtree_node *lookup_node;
-    while (tmp_node != &sentinel) {
-        if (lookup_key != tmp_node->key) {
-            tmp_node = (lookup_key < tmp_node->key) ? tmp_node->left : tmp_node->right;
-            continue;
-        }
-        lookup_node = (test_rbtree_node*)tmp_node;
-        break;
-    }
-
-}
-
-
-static inline test_array(ngx_http_request_t *r) {
-    ngx_array_t* dy_array = ngx_array_create(r->pool, 1, sizeof(test_node));
-    test_node* a =  ngx_array_push(dy_array);
-    a->num = 1;
-    a = ngx_array_push(dy_array);
-    a->num = 2;
-    test_node* b = ngx_array_push_n(dy_array, 3);
-    b->num = 3;
-    (b+1)->num = 4;
-    (b+2)->num = 5;
-
-    test_node* node_arr = dy_array->elts;
-    ngx_uint_t arr_seq = 0;
-    for (; arr_seq < dy_array->nelts; arr_seq++) {
-        a = node_arr + arr_seq;
-        printf("num=%d\n", a->num);
-    }
-
-    ngx_array_destroy(dy_array);
-}
 
 static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r) {
     if ( !(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD))) {
         return NGX_HTTP_NOT_ALLOWED;
     }
-
-    test_queue();
-    test_array(r);
-
-    // 获取上下文
-    ngx_http_mytest_ctx_t* myctx = ngx_http_get_module_ctx(r, ngx_http_mytest_module);
-    if (myctx == NULL) {
-        myctx = ngx_palloc(r->pool, sizeof(ngx_http_mytest_ctx_t));
-        if (myctx == NULL) {
-            return NGX_ERROR;
-        }
-        ngx_http_set_ctx(r, myctx, ngx_http_mytest_module);
-    }
-
-
-    ngx_int_t rc = ngx_http_discard_request_body(r);
-    if (rc != NGX_OK) {
-        return rc;
-    }
-
-    ngx_str_t type = ngx_string("text/plain");
-    ngx_str_t res = ngx_string("Hello World");
+    r->keepalive = 0;
+    
     r->headers_out.status = NGX_HTTP_OK;
-    r->headers_out.content_length_n = res.len;
-    r->headers_out.content_type = type;
+    r->headers_out.content_length_n = 10;   
+    ngx_str_t charset = ngx_string("utf-8"); 
+    r->headers_out.charset = charset;
 
-    rc = ngx_http_send_header(r);
-    if (rc == NGX_ERROR || rc > NGX_OK || r->header_only) {
-        return rc;
-    }
-    // 临时的内存 把数据写进去
-    ngx_buf_t *b;
-    b = ngx_create_temp_buf(r->pool, res.len);
-    if (b == NULL) {
-        return NGX_HTTP_INTERNAL_SERVER_ERROR;
-    }
-    ngx_memcpy(b->pos, res.data, res.len);
-    b->last = b->pos + res.len;
-    b->last_buf = 1;
-    
+    ngx_http_send_header(r);
 
-    // ngx_buf_t *b;
-    // b = ngx_palloc(r->pool, sizeof(ngx_buf_t));
-    // u_char* filename = "/home/reading/reading/extended/test_module/hello.txt";
-    // b->in_file = 1;
-    // b->file = ngx_palloc(r->pool, sizeof(ngx_file_t));
-    // b->file->fd = ngx_open_file(filename, NGX_FILE_RDONLY, NGX_FILE_OPEN, NGX_FILE_DEFAULT_ACCESS);
-    // b->file->name.len = strlen(filename);
-    // if (b->file->fd <= 0) {
-    //     return NGX_HTTP_NOT_FOUND;
-    // }
-    // if (ngx_file_info(filename, &b->file->info) == NGX_FILE_ERROR) {
-    //     return NGX_HTTP_INTERNAL_SERVER_ERROR;
-    // }
-    // r->headers_out.content_length_n = b->file->info.st_size;
-    // b->file_pos = 0;
-    // b->file_last = b->file->info.st_size;
-    // printf("\n");
-    // printf("st size: %u\n", b->file_last);
-    // // close the file
-    // ngx_pool_cleanup_t* cln = ngx_pool_cleanup_add(r->pool, sizeof(ngx_pool_cleanup_file_t));
-    // if (cln == NULL) {
-    //     return NGX_ERROR;
-    // }
-    // cln->handler = ngx_pool_cleanup_file;
-    // ngx_pool_cleanup_file_t* clnf = cln->data;
-    // clnf->fd = b->file->fd;
-    // clnf->name = b->file->name.data;
-    // clnf->log = r->pool->log;
-    
-    // ngx_str_t path = ngx_string("/dev/shm/fmp4/2");
-    // remove_timer((ngx_cycle_t *)ngx_cycle, path, 5000);
+    ngx_chain_t in;
+    ngx_buf_t buf;
+    buf.start = buf.pos = buf.end = 0;
+    buf.last_buf = 1;
+    buf.last_in_chain = 1;
+    in.buf = &buf;
+    in.next = NULL;
 
-    ngx_chain_t out;
-    out.buf = b;
-    out.next = NULL;
-
-    r->allow_ranges = 1;
-
-
-
-
-    return ngx_http_output_filter(r, &out);
+    return ngx_http_output_filter(r, &in);
 }
