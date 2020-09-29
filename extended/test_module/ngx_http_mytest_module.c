@@ -195,20 +195,26 @@ static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r) {
         return NGX_HTTP_NOT_ALLOWED;
     }
     r->keepalive = 0;
-    
+    ngx_str_t hello = ngx_string("hello");
     r->headers_out.status = NGX_HTTP_OK;
-    r->headers_out.content_length_n = 10;   
+    r->headers_out.content_length_n = hello.len;   
     ngx_str_t charset = ngx_string("utf-8"); 
     r->headers_out.charset = charset;
 
     ngx_http_send_header(r);
 
     ngx_chain_t in;
-    ngx_buf_t buf;
-    buf.start = buf.pos = buf.end = 0;
-    buf.last_buf = 1;
-    buf.last_in_chain = 1;
-    in.buf = &buf;
+    ngx_buf_t *buf;
+    buf = ngx_create_temp_buf(r->pool, hello.len);
+    if (buf == NULL) {
+        return NGX_ERROR;
+    }
+
+    ngx_memcpy(buf->pos, hello.data, hello.len);
+    buf->last = buf->pos + hello.len;
+    buf->last_buf = 1;
+
+    in.buf = buf;
     in.next = NULL;
 
     return ngx_http_output_filter(r, &in);

@@ -86,3 +86,5 @@
 2020/09/29 20:07:38 [alert] 55158#0: worker process 55354 exited on signal 11
 2020/09/29 20:07:38 [alert] 55158#0: worker process 55384 exited on signal 11
 2020/09/29 20:07:39 [alert] 55158#0: worker process 55399 exited on signal 11
+2020/09/29 20:23:44 [warn] 67071#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
+2020/09/29 20:24:50 [warn] 70217#0: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /Users/kay/Documents/mywork/my_nginx_learning/installed/conf/nginx.conf:2
